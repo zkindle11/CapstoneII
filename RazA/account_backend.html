@@ -1,0 +1,49 @@
+<?php
+
+include("connectDatabase.html");
+
+if($_POST["update_email"]==true){
+    update_email($_POST["new_email"]);
+}
+
+if($_POST["update_password"]==true){
+    update_pwd($_POST["cur_pwd"],$_POST["new_pwd"],$_POST["confirm_pwd"]);
+}
+
+//$dbh = null;
+
+function update_email($new_email){
+    global $dbh;
+    $command = "UPDATE users SET email = '" . $new_email. "' WHERE user_name = '" . $_SESSION['user'] . "'";
+    
+    $dbh->exec($command);
+    $dbh = null;
+    $_SESSION['email'] = $new_email;
+}
+
+function update_pwd($current_pwd,$new_pwd,$confirm_new_pwd){
+    global $dbh;
+    
+    $query = "SELECT * FROM users WHERE user_name = '" . $_SESSION['user']. "'";   
+    $user = $dbh->query($query);
+    
+    foreach ($user as $temp){        
+        if($current_pwd !== $temp['pass']) {
+            print("Current password incorrect.");
+        }
+        else {
+            if($new_pwd === $confirm_new_pwd){
+                $command = "UPDATE users SET pass = '" . $new_pwd. "' WHERE user_id = '" . $temp['user_id'] . "'";
+                echo $command;
+                $dbh->exec($command);
+                print("Password successfully updated."); 
+            }	
+            else{
+                print("New Passwords do not match.");          
+            }
+        }
+    }
+    $dbh = null;
+}
+
+?>

@@ -1,0 +1,27 @@
+<?php
+
+
+/*** mysql hostname ***/
+$hostname = 'localhost';
+
+/*** mysql username ***/
+$username = 'jsquire';
+
+/*** mysql password ***/
+$password = 'waiChu8i';
+
+$db = 'softeng01';
+
+$dbh;
+
+try {
+    $dbh = new PDO("mysql:host=$hostname;dbname=$db", $username, $password);
+    /*** echo a message saying we have connected ***/
+    //echo 'Connected to database<br>';
+    }
+catch(PDOException $e)
+    {
+    echo $e->getMessage();
+    }
+        
+?>
